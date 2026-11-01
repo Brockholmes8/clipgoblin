@@ -4,3 +4,7 @@ __pycache__/
 out/
 downloads/
 *.part
+state.json
+queue.json
+*.tmp
+permissions/

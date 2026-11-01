@@ -1,0 +1,83 @@
+# Streamers the bot watches. It only clips streamers with approved = true.
+# Set approved = true only after you have their permission saved (screenshot/email in permissions/)
+# or you've joined their official clipping program, and put any rules they gave you in notes.
+#
+# channel: the streamer's channel page. Twitch, YouTube and Kick links all work.
+# Double-check each link: streamers move platforms, and some of these are best guesses.
+
+[[streamer]]
+name = "Jynxzi"
+channel = "https://www.twitch.tv/jynxzi"
+credit = "@Jynxzi on Twitch"
+approved = true
+notes = ""
+
+[[streamer]]
+name = "Adapt"
+channel = "https://kick.com/adapt"
+credit = "@Adapt on Kick"
+approved = true
+notes = "Check platform"
+
+[[streamer]]
+name = "CaseOh"
+channel = "https://www.twitch.tv/caseoh_"
+credit = "@CaseOh on Twitch"
+approved = true
+notes = ""
+
+[[streamer]]
+name = "IShowSpeed"
+channel = "https://www.youtube.com/@IShowSpeed"
+credit = "@IShowSpeed on YouTube"
+approved = true
+notes = ""
+
+[[streamer]]
+name = "Lacy"
+channel = "https://www.twitch.tv/lacy"
+credit = "@Lacy on Twitch"
+approved = true
+notes = "Has run a paid clipper Discord (announced on X); ask to join"
+
+[[streamer]]
+name = "StableRonaldo"
+channel = "https://www.twitch.tv/stableronaldo"
+credit = "@StableRonaldo on Twitch"
+approved = true
+notes = ""
+
+[[streamer]]
+name = "TheBurntPeanut"
+channel = "https://www.twitch.tv/theburntpeanut"
+credit = "@TheBurntPeanut on Twitch"
+approved = true
+notes = ""
+
+[[streamer]]
+name = "Adin Ross"
+channel = "https://kick.com/adinross"
+credit = "@AdinRoss on Kick"
+approved = true
+notes = "Reportedly backs a paid clipping network; ask to join"
+
+[[streamer]]
+name = "xQc"
+channel = "https://kick.com/xqc"
+credit = "@xQc on Kick"
+approved = true
+notes = "Also streams on twitch.tv/xqc"
+
+[[streamer]]
+name = "Kai Cenat"
+channel = "https://www.twitch.tv/kaicenat"
+credit = "@KaiCenat on Twitch"
+approved = true
+notes = ""
+
+[[streamer]]
+name = "ohnePixel"
+channel = "https://www.twitch.tv/ohnepixel"
+credit = "@ohnePixel on Twitch"
+approved = true
+notes = ""

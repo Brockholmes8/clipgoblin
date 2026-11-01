@@ -46,6 +46,17 @@ a finished short per pick in `out/`. Set `ANTHROPIC_API_KEY` for the AI picks; w
 
 Scanning uses the fast `base` Whisper model by default; a 3-hour stream takes a while on a laptop.
 
+## Run it as a bot
+
+1. List streamers in `streamers.toml`. Only ones with `approved = true` get clipped.
+   Keep proof of each permission (screenshot or email) in a `permissions/` folder.
+2. `python watcher.py` checks every approved streamer for new streams, finds the highlights,
+   renders the shorts and puts them in a review queue. Use `--every 3` to keep it running and
+   check every 3 hours, or schedule a single run with Task Scheduler (Windows) or cron (Mac).
+   The first time it sees a streamer it only takes their latest stream, not the whole archive.
+3. `python review.py` plays each new clip and lets you approve, reject or edit the caption.
+   Only approved clips will be posted.
+
 ## Bottom-half loops
 
 Put 5 to 10 second videos in `loops/`. Good sources:
