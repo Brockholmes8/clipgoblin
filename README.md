@@ -8,7 +8,7 @@ Turns a streamer clip into a 1080x1920 split-screen short:
 ## Setup (once)
 
 1. Install Python 3.10+ and ffmpeg (Windows: `winget install ffmpeg`, Mac: `brew install ffmpeg`).
-2. `pip install faster-whisper yt-dlp`
+2. `pip install -r requirements.txt`
 
 The first run downloads the Whisper caption model (about 500 MB for `small`).
 
@@ -30,6 +30,21 @@ Options:
 - `--max-len 60` caps length (default 60s); `--no-captions` skips captions
 - `--model tiny|base|small|medium|large-v3` picks caption accuracy vs speed (default `small`)
 - `--watermark ""` hides the watermark
+
+## Find highlights in a whole stream
+
+`highlights.py` scans a full VOD, finds the hype moments from volume spikes, transcribes them,
+and has Claude pick the best ones and write a hook title, post caption and hashtags.
+
+```
+python highlights.py --vod "https://www.twitch.tv/videos/..." --streamer "@streamer on Twitch" --top 5 --render --bottom loops/
+```
+
+It writes `out/highlights.json` (timestamps, hooks, captions, hashtags) and, with `--render`,
+a finished short per pick in `out/`. Set `ANTHROPIC_API_KEY` for the AI picks; without it
+(or with `--no-ai`) it ranks by loudness only and leaves hooks blank.
+
+Scanning uses the fast `base` Whisper model by default; a 3-hour stream takes a while on a laptop.
 
 ## Bottom-half loops
 
