@@ -164,6 +164,27 @@ def make_demo_loop(out, seconds=8):
     ])
 
 
+def make_short(src, bottom, out, start=None, end=None, hook=None, credit=None, watermark="ClipGoblin",
+               max_len=60, captions=True, model="small", language=None, font="Inter Display"):
+    """Fetch/trim the source clip, caption it and compose the finished 9:16 short at `out`."""
+    with tempfile.TemporaryDirectory() as tmp:
+        tmp = Path(tmp)
+        top = fetch_top(src, start, end, tmp)
+        bottom = pick_bottom(bottom)
+        total = duration(top)
+        if max_len:
+            total = min(total, max_len)
+        chunks = []
+        if captions:
+            words = [w for w in transcribe(top, model, language) if w.start < total]
+            chunks = chunk_words(words)
+        ass_path = None
+        if chunks or hook or credit or watermark:
+            ass_path = tmp / "subs.ass"
+            ass_path.write_text(build_ass(chunks, hook, credit, watermark, font, total), encoding="utf-8")
+        compose(top, bottom, ass_path, out, max_len)
+
+
 def main():
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     ap.add_argument("--top", help="streamer clip: local file or URL")
@@ -188,22 +209,9 @@ def main():
     if not (a.top and a.bottom):
         ap.error("--top and --bottom are required")
 
-    with tempfile.TemporaryDirectory() as tmp:
-        tmp = Path(tmp)
-        top = fetch_top(a.top, a.start, a.end, tmp)
-        bottom = pick_bottom(a.bottom)
-        total = duration(top)
-        if a.max_len:
-            total = min(total, a.max_len)
-        chunks = []
-        if not a.no_captions:
-            words = [w for w in transcribe(top, a.model, a.language) if w.start < total]
-            chunks = chunk_words(words)
-        ass_path = None
-        if chunks or a.hook or a.credit or a.watermark:
-            ass_path = tmp / "subs.ass"
-            ass_path.write_text(build_ass(chunks, a.hook, a.credit, a.watermark, a.font, total), encoding="utf-8")
-        compose(top, bottom, ass_path, a.out, a.max_len)
+    make_short(a.top, a.bottom, a.out, start=a.start, end=a.end, hook=a.hook, credit=a.credit,
+               watermark=a.watermark, max_len=a.max_len, captions=not a.no_captions, model=a.model,
+               language=a.language, font=a.font)
     print(f"Wrote {a.out}", file=sys.stderr)
 
 

@@ -8,7 +8,7 @@ Turns a streamer clip into a 1080x1920 split-screen short:
 ## Setup (once)
 
 1. Install Python 3.10+ and ffmpeg (Windows: `winget install ffmpeg`, Mac: `brew install ffmpeg`).
-2. `pip install faster-whisper yt-dlp`
+2. `pip install -r requirements.txt`
 
 The first run downloads the Whisper caption model (about 500 MB for `small`).
 
@@ -30,6 +30,32 @@ Options:
 - `--max-len 60` caps length (default 60s); `--no-captions` skips captions
 - `--model tiny|base|small|medium|large-v3` picks caption accuracy vs speed (default `small`)
 - `--watermark ""` hides the watermark
+
+## Find highlights in a whole stream
+
+`highlights.py` scans a full VOD, finds the hype moments from volume spikes, transcribes them,
+and has Claude pick the best ones and write a hook title, post caption and hashtags.
+
+```
+python highlights.py --vod "https://www.twitch.tv/videos/..." --streamer "@streamer on Twitch" --top 5 --render --bottom loops/
+```
+
+It writes `out/highlights.json` (timestamps, hooks, captions, hashtags) and, with `--render`,
+a finished short per pick in `out/`. Set `ANTHROPIC_API_KEY` for the AI picks; without it
+(or with `--no-ai`) it ranks by loudness only and leaves hooks blank.
+
+Scanning uses the fast `base` Whisper model by default; a 3-hour stream takes a while on a laptop.
+
+## Run it as a bot
+
+1. List streamers in `streamers.toml`. Only ones with `approved = true` get clipped.
+   Keep proof of each permission (screenshot or email) in a `permissions/` folder.
+2. `python watcher.py` checks every approved streamer for new streams, finds the highlights,
+   renders the shorts and puts them in a review queue. Use `--every 3` to keep it running and
+   check every 3 hours, or schedule a single run with Task Scheduler (Windows) or cron (Mac).
+   The first time it sees a streamer it only takes their latest stream, not the whole archive.
+3. `python review.py` plays each new clip and lets you approve, reject or edit the caption.
+   Only approved clips will be posted.
 
 ## Bottom-half loops
 
